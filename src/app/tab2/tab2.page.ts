@@ -22,6 +22,14 @@ export class Tab2Page implements OnInit {
       })
   }
 
+  refreshPage() {
+    this.studentsService.readAllStudent()
+      .subscribe(result=>{
+        this.students = result;
+      },err=>{
+        console.log(err)
+      })
+   }
 
   onDelete(student){
     let Id = parseInt(student['studentId'].toString())

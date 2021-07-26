@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { ClassesService } from 'src/app/services/classes.service';
 import { StudentsService } from 'src/app/services/students.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Tab2Page } from '../tab2.page';
 
 
 @Component({
@@ -146,6 +147,7 @@ export class StudentupdaterPage implements OnInit {
 
         this.studentService.updateOneStudent(this.studentToUpdate,this.studentId)
         .subscribe((resp)=>{
+          
           console.log(resp)
           this.alertctrl.create({
             header: resp['msg'].toString(),
