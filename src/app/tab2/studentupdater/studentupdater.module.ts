@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { Tab1PageRoutingModule } from './tab1-routing.module';
+import { StudentupdaterPageRoutingModule } from './studentupdater-routing.module';
 
-import { Tab1Page } from './tab1.page';
+import { StudentupdaterPage } from './studentupdater.page';
 
 @NgModule({
   imports: [
@@ -14,8 +14,8 @@ import { Tab1Page } from './tab1.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    Tab1PageRoutingModule
+    StudentupdaterPageRoutingModule
   ],
-  declarations: [Tab1Page]
+  declarations: [StudentupdaterPage]
 })
-export class Tab1PageModule {}
+export class StudentupdaterPageModule {}

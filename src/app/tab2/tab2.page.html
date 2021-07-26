@@ -1,17 +1,30 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>View Student</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+
+<ion-content>
+  <ion-card>
+   <ion-list>
+     <ion-item *ngFor="let s of students">
+        <br>
+        <br>
+         Student ID - {{s.studentId}}<br>{{s.firstName}} {{s.lastName}}
+         <ion-button slot="end" shape="round" [routerLink]="['studentdetails/',s.studentId]">
+           <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+          </ion-button>
+          <ion-button slot="end" shape="round" color="secondary" [routerLink]="['studentupdater/',s.studentId]">
+            <ion-icon name="settings-outline"></ion-icon>
+          </ion-button>
+          <ion-button slot="end" shape="round" color = "danger" (click)="onDelete(s)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+          <br>
+          <br>
+     </ion-item>
+   </ion-list>
+  </ion-card>
 </ion-content>

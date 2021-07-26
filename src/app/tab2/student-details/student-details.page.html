@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{student['firstName'] + ' '+ student['lastName']}}</ion-title>
+    <ion-back-button slot="start" [defaultHref]="'tab2'"></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-card>
+  <br>
+  <ion-item>
+    <ion-label>
+      Class Id : {{student['classId']}}
+    </ion-label>
+  </ion-item>
+
+  <br>
+  <ion-item>
+    <ion-label>
+      Student Id : {{student['studentId']}}
+    </ion-label>
+  </ion-item>
+
+  <br>
+  <ion-item>
+    <ion-label>
+      First Name : {{student['firstName']}}
+    </ion-label>
+  </ion-item>
+
+  <br>
+  <ion-item>
+    <ion-label>
+      Last Name : {{student['lastName']}}
+    </ion-label>
+  </ion-item>
+
+  <br>
+  <ion-item>
+    <ion-label>
+      Phone Number : {{student['phoneNumber']}}
+    </ion-label>
+  </ion-item>
+
+  <br>
+  <ion-item>
+    <ion-label>
+      Email-ID : {{student['emailId']}}
+    </ion-label>
+  </ion-item>
+  <br>
+
+</ion-card>
+</ion-content>

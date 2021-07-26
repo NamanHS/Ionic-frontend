@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { ClassesService } from '../services/classes.service';
-import { StudentsService } from '../services/students.service';
+import { ClassesService } from 'src/app/services/classes.service';
+import { StudentsService } from 'src/app/services/students.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: './tab1.page.html',
-  styleUrls: ['./tab1.page.scss'],
+  selector: 'app-studentupdater',
+  templateUrl: './studentupdater.page.html',
+  styleUrls: ['./studentupdater.page.scss'],
 })
-export class Tab1Page implements OnInit {
-
-  student;
-  classes;
-
+export class StudentupdaterPage implements OnInit {
+  studentId: any;
+  studentToUpdate: any;
+  classes
+  formwithIntialValue
+  initialStudent
 
   form = new FormGroup({
     firstName: new FormControl('',[Validators.required,Validators.minLength(3),Validators.maxLength(20)]),
@@ -23,9 +26,9 @@ export class Tab1Page implements OnInit {
     classId: new FormControl('',[Validators.required])
   });
 
-  constructor(private alertctrl: AlertController, private studentsService: StudentsService, private classesService: ClassesService) { }
+  constructor(private activatedRoute: ActivatedRoute, private studentService: StudentsService, private alertctrl: AlertController,private classesService: ClassesService) {
 
-  ngOnInit() {
+    this.studentId = 'Loading...';
 
     this.classesService.readClasses()
       .subscribe(result=>{
@@ -36,9 +39,37 @@ export class Tab1Page implements OnInit {
 
   }
 
+  ngOnInit() {
+
+    this.activatedRoute.paramMap
+      .subscribe(paramMap=>{
+        let id: any
+        id = paramMap.get('id')
+        this.studentId = id
+        id = parseInt(id.toString())
+          this.studentService.readOneStudent(id)
+            .subscribe(res=>{
+              this.form.get('firstName').setValue(res[0].firstName)
+              this.form.get('lastName').setValue(res[0].lastName)
+              this.form.get('emailId').setValue(res[0].emailId)
+              this.form.get('phoneNumber').setValue(res[0].phoneNumber)
+              this.form.get('classId').setValue(res[0].classId)
+
+              this.initialStudent = {
+                firstName: res[0].firstName.toString(),
+                lastName: res[0].lastName.toString(),
+                emailId: res[0].emailId.toString(),
+                phoneNumber: res[0].phoneNumber.toString(),
+                classId : parseInt(res[0].classId.toString())
+              }
+            })
+      })
+  }
+
   onSubmit(){
-    console.log(this.form)
     let alerter;
+
+    console.log(this.form)
     if(this.form.invalid){
 
       if(this.form.pristine){
@@ -100,7 +131,8 @@ export class Tab1Page implements OnInit {
       }
 
       if(this.form.valid){
-        this.student = {
+
+        this.studentToUpdate = {
         firstName: this.form.get('firstName').value.toString(),
         lastName: this.form.get('lastName').value.toString(),
         phoneNumber: this.form.get('phoneNumber').value.toString(),
@@ -108,12 +140,41 @@ export class Tab1Page implements OnInit {
         classId: parseInt(this.form.get('classId').value.toString())
       }
 
-      console.log(this.student)
+      if(this.isChanged(this.studentToUpdate)){ //----------------------CHECK IF ATLEAST ONE FIELD VALUE CHANGED OR NOT
 
-      this.studentsService.createStudent(this.student)
-      .subscribe((resp)=>{
+        console.log(this.studentToUpdate)
+
+        this.studentService.updateOneStudent(this.studentToUpdate,this.studentId)
+        .subscribe((resp)=>{
+          console.log(resp)
+          this.alertctrl.create({
+            header: resp['msg'].toString(),
+            buttons: [
+              {
+                text: 'Okay',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertctrl=>{
+            alertctrl.present();
+          });
+        },err=>{
+          console.log(err)
+          this.alertctrl.create({
+            header: err['msg'].toString(),
+            buttons: [
+              {
+                text: 'Okay',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertctrl=>{
+            alertctrl.present();
+          });
+        })
+      }else{
         this.alertctrl.create({
-          header: resp['msg'].toString(),
+          header: 'No Changes Detected',  //---------------IF NO CHANGES
           buttons: [
             {
               text: 'Okay',
@@ -123,22 +184,20 @@ export class Tab1Page implements OnInit {
         }).then(alertctrl=>{
           alertctrl.present();
         });
-      },err=>{
-        console.log(err)
-        this.alertctrl.create({
-          header: err,
-          buttons: [
-            {
-              text: 'Okay',
-              role: 'cancel'
-            }
-          ]
-        }).then(alertctrl=>{
-          alertctrl.present();
-        });
-      })
+      }
+
     }
 
   }
+
+  isChanged(newstudent){   //----------------------------CHECK CHANGES
+    console.log(newstudent)
+    console.log(this.initialStudent)
+    for(let key in this.initialStudent){
+      if(newstudent[key] !== this.initialStudent[key]) return true;
+    }
+    return false;
+  }
+
 
 }
