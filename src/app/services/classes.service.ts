@@ -6,12 +6,17 @@ import { Injectable } from '@angular/core';
 })
 export class ClassesService {
 
-  private url = 'http://localhost:5000/api/classes'
+  private fetchClasses = 'http://localhost:5000/api/classes'
+  private fetchSubjects = "http://localhost:5000/api/classes/getsubjects"
 
   constructor(private httpClient: HttpClient) { }
 
   readClasses(){
-    return this.httpClient.get(this.url);
+    return this.httpClient.get(this.fetchClasses);
+  }
+
+  readSubjectsOfStudent(studentId){
+    return this.httpClient.get(`${this.fetchSubjects}/${studentId}`);
   }
 
 }

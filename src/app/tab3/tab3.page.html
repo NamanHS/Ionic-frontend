@@ -1,9 +1,68 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>tab3</ion-title>
+    <ion-title>Add Marks</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <form method="post" [formGroup]= "form" (ngSubmit)="onAddStudentId()">
+      <ion-item lines="none">
+        <ion-label>
+          Student Id :
+        </ion-label>
+        <ion-input type="number" formControlName="studentId">
+        </ion-input>
+        <ion-button slot="end" type="submit">
+          <ion-icon name="add-circle"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </form>
+  </ion-card>
+
+  <ion-card *ngIf="form2status">
+    <ion-item lines="none">
+      <ion-label>
+        First Name : {{firstName}}
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>
+        Last Name : {{lastName}}
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>
+        Class ID : {{classId}}
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>
+        Class Name : {{className}}
+      </ion-label>
+    </ion-item>
+    <br>
+
+    <form method="post" [formGroup]="form2" (ngSubmit)="onForm2Submit()">
+      <ion-item *ngFor="let val of subjects">
+        <ion-label>
+          {{val.sub}}
+        </ion-label>
+        <ion-input type="number" formControlName="{{val.sub}}Marks">
+
+        </ion-input>
+        <br>
+        <ion-label>
+          Out Of : {{val.maxMarks}}
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-button type="submit" slot ="end" shape="round">
+          SUBMIT
+        </ion-button>
+      </ion-item>
+    </form>
+
+  </ion-card>
 
 </ion-content>
