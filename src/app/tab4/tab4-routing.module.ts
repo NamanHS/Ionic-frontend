@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: Tab4Page
+  },
+  {
+    path: 'studentsmarksheet/:id',
+    loadChildren: () => import('./students-marksheet/students-marksheet.module').then( m => m.StudentsMarksheetPageModule)
   }
 ];
 
