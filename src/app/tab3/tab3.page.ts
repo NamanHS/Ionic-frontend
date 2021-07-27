@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, FormControlName } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { ClassesService } from '../services/classes.service';
+import { MarksheetsService } from '../services/marksheets.service';
 
 @Component({
   selector: 'app-tab3',
@@ -26,7 +27,7 @@ export class Tab3Page implements OnInit {
   form2;
   form2status = false;
 
-  constructor(private alertcontroller: AlertController, private classService: ClassesService) { }
+  constructor(private alertcontroller: AlertController, private classService: ClassesService, private marksheetsService: MarksheetsService) { }
 
   ngOnInit() {
   }
@@ -167,7 +168,6 @@ export class Tab3Page implements OnInit {
 
       console.log(marks)
 
-
       let marksheet = {
         classId: this.classId,
         studentId: this.studentId,
@@ -175,6 +175,34 @@ export class Tab3Page implements OnInit {
       }
 
       console.log(marksheet)
+
+      this.marksheetsService.createMarksheet(marksheet)
+        .subscribe(result=>{
+          this.alertcontroller.create({
+            header: result['msg'].toString(),
+            buttons: [
+              {
+                text: 'Okay',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertctrl=>{
+            alertctrl.present();
+          });
+        },err=>{
+          this.alertcontroller.create({
+            header: err['msg'].toString(),
+            buttons: [
+              {
+                text: 'Okay',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertctrl=>{
+            alertctrl.present();
+          });
+        })
+
 
     }
 
