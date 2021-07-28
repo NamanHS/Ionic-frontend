@@ -73,6 +73,11 @@
       <div>
         <ion-item>
           <ion-label>
+            <ion-item lines="none">
+              <ion-button slot="end" size="default" shape="round" (click)="generatePDF()">
+                <ion-icon name="print-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
             Marksheet ID : {{marksheet['marksheetId']}}
             <br>
             <br>
@@ -86,6 +91,8 @@
             Last Name : {{marksheet['lastName']}}
             <br>
             <br>
+            STATUS : {{marksheet['status']}}
+            <br>
             <table border="1px black solid" border-collapse="collapse">
               <tr>
                 <th style="padding:10px">Subject</th>
@@ -98,18 +105,18 @@
                 <td style="padding:10px; text-align: center;">{{elem.maxMarks}}</td>
               </tr>
               <tr>
-                <td style="padding:10px; text-align: center;"></td>
-                <td style="padding:10px; text-align: center;">{{marksheet.totalMarks}}</td>
-                <td style="padding:10px; text-align: center;">{{marksheet.totalMaxMarks}}</td>
+                <td style="padding:10px; text-align: center; font-weight: bold;">TOTAL MARKS</td>
+                <td style="padding:10px; text-align: center; font-weight: bold;">{{marksheet.totalMarks}}</td>
+                <td style="padding:10px; text-align: center; font-weight: bold;">{{marksheet.totalMaxMarks}}</td>
               </tr>
 
               <tr>
                 <td></td>
-                <td colspan="2" style="padding:10px; text-align: center;">Percentage : {{marksheet.percentage}}%</td>
+                <td colspan="2" style="padding:10px; text-align: center;font-weight: bold">Percentage : {{marksheet.percentage}}%</td>
               </tr>
               <tr>
                 <td></td>
-                <td colspan="2" style="padding:10px; text-align: center;">Grade : {{marksheet.grade}}</td>
+                <td colspan="2" style="padding:10px; text-align: center;font-weight: bold">Grade : {{marksheet.grade}}</td>
               </tr>
             </table>
 

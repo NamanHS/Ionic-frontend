@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MarksheetsService } from 'src/app/services/marksheets.service';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
 @Component({
   selector: 'app-students-marksheet',
@@ -11,7 +15,7 @@ export class StudentsMarksheetPage implements OnInit {
 
   marksheet : any;
   resultStatus: any;
-  marks;
+  marks: any[];
 
   constructor(private activatedRoute: ActivatedRoute,private markSheetsService: MarksheetsService) {
     this.marksheet =  {
@@ -36,6 +40,48 @@ export class StudentsMarksheetPage implements OnInit {
               console.log(this.marksheet)
             })
       })
+
+  }
+
+  generatePDF() {
+    let date = new Date();
+    let pdfmarks = []
+    this.marks.forEach(val =>{
+      let temp = []
+      temp.push((val.sub).toString())
+      temp.push((val.marks).toString())
+      temp.push((val.maxMarks).toString())
+      pdfmarks.push(temp)
+    }
+    );
+    console.log(pdfmarks)
+    let docDefinition = {
+      header: `Printed On - ${date}`,
+      content: [
+        {
+          text: `MARKSHEET ID - ${this.marksheet.marksheetId}\n\nClass - ${this.marksheet.className}\n\nStudent ID - ${this.marksheet.studentId}\nFirst Name - ${this.marksheet.firstName}\nLast Name - ${this.marksheet.lastName}\n\nSTATUS - ${this.marksheet.status}` ,
+
+        },
+        {
+          width: 'auto',
+          table: {
+            headerRows: 1,
+            width: ['auto','auto','auto'],
+            body: [
+              ['Subject','Marks','Max Marks'],
+              ...pdfmarks,
+              ['TOTAL MARKS',`${this.marksheet.totalMarks}`,`${this.marksheet.totalMaxMarks}`],
+              ['',{text:`Percentage - ${this.marksheet.percentage}%`,colSpan:2},''],
+              ['',{text:`Grade - ${this.marksheet.grade}`,colSpan:2},'']
+
+
+            ]
+          }
+        }
+      ]
+    };
+
+    pdfMake.createPdf(docDefinition).print();
   }
 
 }
