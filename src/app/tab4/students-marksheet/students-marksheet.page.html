@@ -5,6 +5,54 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="resultStatus">
+<ion-card>
+  <div>
+    <ion-item>
+      <ion-label>
+        Marksheet ID : {{marksheet['marksheetId']}}
+        <br>
+        <br>
+        Class : {{marksheet['className']}}
+        <br>
+        <br>
+        Student ID : {{marksheet['studentId']}}
+        <br>
+        First Name : {{marksheet['firstName']}}
+        <br>
+        Last Name : {{marksheet['lastName']}}
+        <br>
+        <br>
+        <table border="1px black solid" border-collapse="collapse">
+          <tr>
+            <th style="padding:10px">Subject</th>
+            <th style="padding:10px">Marks</th>
+            <th style="padding:10px">Max Marks</th>
+          </tr>
+          <tr *ngFor="let elem of marks">
+            <td align="left" style="padding:10px; text-align: center;">{{elem.sub}}</td>
+            <td style="padding:10px; text-align: center;">{{elem.marks}}</td>
+            <td style="padding:10px; text-align: center;">{{elem.maxMarks}}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px; text-align: center;"></td>
+            <td style="padding:10px; text-align: center;">{{marksheet.totalMarks}}</td>
+            <td style="padding:10px; text-align: center;">{{marksheet.totalMaxMarks}}</td>
+          </tr>
 
+          <tr>
+            <td></td>
+            <td colspan="2" style="padding:10px; text-align: center;">Percentage : {{marksheet.percentage}}%</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="2" style="padding:10px; text-align: center;">Grade : {{marksheet.grade}}</td>
+          </tr>
+        </table>
+
+
+      </ion-label>
+    </ion-item>
+  </div>
+</ion-card>
 </ion-content>

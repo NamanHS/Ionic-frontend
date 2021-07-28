@@ -11,12 +11,14 @@ export class StudentsMarksheetPage implements OnInit {
 
   marksheet : any;
   resultStatus: any;
+  marks;
 
   constructor(private activatedRoute: ActivatedRoute,private markSheetsService: MarksheetsService) {
     this.marksheet =  {
       firstName: 'Loading...',
       lastName: '',
     }
+    this.resultStatus = false;
    }
 
   ngOnInit() {
@@ -28,6 +30,9 @@ export class StudentsMarksheetPage implements OnInit {
           this.markSheetsService.getMarksheetByStudentId(id)
             .subscribe(res=>{
               this.marksheet = res[0]
+              this.resultStatus = true;
+              this.marks = JSON.parse(this.marksheet['marks'])
+              console.log(this.marks)
               console.log(this.marksheet)
             })
       })
