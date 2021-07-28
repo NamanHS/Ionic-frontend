@@ -106,7 +106,18 @@ export class Tab4Page implements OnInit {
         this.classResultStatus = true
         this.resultByClassId = result
       },err=>{
-        console.log(err)
+        this.alertController.create({
+          header: err.error.msg.toString(),
+          buttons: [
+            {
+              text: 'Okay',
+              role: 'cancel'
+            }
+          ]
+        }).then(alertctrl=>{
+          alertctrl.present();
+        });
+        console.log(err.error.msg)
         console.log(err)
       })
 
