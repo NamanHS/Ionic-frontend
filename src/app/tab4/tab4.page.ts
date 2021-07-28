@@ -16,8 +16,11 @@ export class Tab4Page implements OnInit {
   resultByClassId;
   resultByStudentId;
 
-  classResultStatus = false
-  studentResultStatus = false
+  marksheet;
+  marks;
+
+  classResultStatus;
+  studentResultStatus;
 
   form1 = new FormGroup({
     classId: new FormControl('',[Validators.required])
@@ -30,7 +33,26 @@ export class Tab4Page implements OnInit {
   colorofClassTab = "primary";
   colorofStudentTab = "light";
 
-  constructor(private alertController: AlertController,private classesService: ClassesService,private markSheetsService: MarksheetsService) { }
+  constructor(private alertController: AlertController,private classesService: ClassesService,private markSheetsService: MarksheetsService) {
+
+    this.resultByClassId = false;
+    this.resultByClassId = false;
+
+    this.classResultStatus = false;
+    this.studentResultStatus = false;
+
+    this.marksheet = {
+      classId: '',
+      className: '',
+      firstName: '',
+      lastName: '',
+      marks: '',
+      marksheetId: '',
+      studentId: ''
+    }
+
+    this.marks = [{sub:'',marks:'',maxMarks:''}]
+  }
 
   ngOnInit() {
     this.classesService.readClasses()
@@ -46,11 +68,15 @@ export class Tab4Page implements OnInit {
       this.colorofClassTab = "light"
       this.colorofStudentTab = "primary"
       this.state = 'selectedStudent'
+      this.resultByClassId = false;
+      this.classResultStatus = false;
     }
     else if(this.state === 'selectedStudent'){
       this.colorofStudentTab = "light"
       this.colorofClassTab = "primary"
       this.state = 'selectedClass'
+      this.resultByStudentId = false;
+      this.studentResultStatus = false;
     }
   }
 
@@ -105,6 +131,9 @@ export class Tab4Page implements OnInit {
       this.markSheetsService.getMarksheetByStudentId(parseInt(this.form2.get('studentId').value.toString()))
       .subscribe(result=>{
         this.resultByStudentId = result
+        this.studentResultStatus = true
+        this.marksheet = result[0]
+        this.marks = JSON.parse(this.marksheet['marks'])
         console.log(result)
       },err=>{
         console.log(err.error.msg)
