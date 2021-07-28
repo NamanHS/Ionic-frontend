@@ -41,7 +41,11 @@
     </form>
 
     <ion-card *ngIf="classResultStatus">
-
+      <ion-item lines="none">
+        <ion-button slot="end" size="default" shape="round" (click)="generateEntirePDF()">
+          <ion-icon name="print-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
         <ion-item  *ngFor="let val of resultByClassId">
             Student ID : {{val.studentId}}
             <br>

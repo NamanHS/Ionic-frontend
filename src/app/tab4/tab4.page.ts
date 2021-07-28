@@ -175,7 +175,6 @@ export class Tab4Page implements OnInit {
 
         },
         {
-          width: 'auto',
           table: {
             headerRows: 1,
             width: ['auto','auto','auto'],
@@ -186,14 +185,81 @@ export class Tab4Page implements OnInit {
               ['',{text:`Percentage - ${this.marksheet.percentage}%`,colSpan:2},''],
               ['',{text:`Grade - ${this.marksheet.grade}`,colSpan:2},'']
 
-
             ]
           }
+
         }
       ]
     };
 
     pdfMake.createPdf(docDefinition).print();
+  }
+
+  generateEntirePDF(){
+
+    let date = new Date();
+
+    let subjects = []
+    let subLen;
+
+    let students = []
+
+    let temp = JSON.parse(this.resultByClassId[0].marks)
+    temp.forEach(element => {
+      let sub = element.sub
+      subjects.push(sub)
+      console.log(sub);
+    });
+
+    let temp2 = [...this.resultByClassId]
+
+    console.log('------------------')
+    console.log(temp2)
+    temp2.forEach(element=>{
+      let entry = []
+      entry.push(element.studentId)
+      entry.push(element.firstName)
+      entry.push(element.lastName)
+
+
+      let m = JSON.parse(element.marks)
+      subLen = m.length;
+
+      m.forEach(elem=>{
+        entry.push(`${elem.marks.toString()}/${elem.maxMarks.toString()}`)
+      })
+      console.log()
+
+      entry.push(`${element.totalMarks}/${element.totalMaxMarks}`)
+      entry.push(`${element.percentage}%`)
+      entry.push(element.grade)
+      entry.push(element.status)
+
+      students.push(entry)
+    })
+
+
+    let docDefinition = {
+      header: `Printed On - ${date}`,
+      content: [
+        {
+          text: `Marksheets for Class - ${this.resultByClassId[0].className}\n\n\n`
+        },
+        {
+          table: {
+            headerRows: 1,
+            body: [
+              ['SID','Name','Surname',...subjects,'TOTAL',' % ','G\nR\nD','S\nT\nS'],
+              ...students
+            ]
+          }
+
+        }
+      ]
+    };
+
+    pdfMake.createPdf(docDefinition).print();
+
   }
 
 }
